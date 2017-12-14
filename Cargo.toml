@@ -1,0 +1,6 @@
+[package]
+name = "rush"
+version = "0.1.0"
+authors = ["Phil J. Laszkowicz <phil@fillip.pro>"]
+
+[dependencies]
