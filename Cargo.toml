@@ -4,3 +4,12 @@ version = "0.1.0"
 authors = ["Phil J. Laszkowicz <phil@fillip.pro>"]
 
 [dependencies]
+byteorder = "1.1"
+bitflags = "0.9"
+log = "0.3"
+
+cryptovec = "0.4.1"
+tokio-core = "0.1"
+tokio-io = "0.1"
+futures = "0.1"
+env_logger = "0.4"
