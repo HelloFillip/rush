@@ -24,3 +24,11 @@ enum Status {
 trait AtomicPoll<E> {
     fn atomic_poll(&mut self) -> futures::Poll<Status, E>;
 }
+
+/// Handlers future types must implement `FromFinished` trait to 
+/// provide reasonable default implementations (i.e. rejecting 
+/// all requests).
+pub trait FromFinished<T, E>: futures::Future<Item = T, Error = E> {
+    /// Turns type `T` into `Self`, a future yielding `T`.
+    fn finished(t: T) -> Self;
+}
