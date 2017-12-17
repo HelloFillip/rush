@@ -18,3 +18,9 @@ enum Status {
     Ok,
     Disconnect,
 }
+
+/// Run one step of the protocol. It factors out common code
+/// between client::Data and server::Data.
+trait AtomicPoll<E> {
+    fn atomic_poll(&mut self) -> futures::Poll<Status, E>;
+}
