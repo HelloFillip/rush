@@ -4,6 +4,7 @@ description = "Client / server lib for SSH 2."
 keywords = ["ssh"]
 version = "0.1.0"
 authors = ["Phil J. Laszkowicz <phil@fillip.pro>"]
+repository = "https://github.com:siilime/rush"
 
 [dependencies]
 byteorder = "1.1"
