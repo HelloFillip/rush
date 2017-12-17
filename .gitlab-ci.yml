@@ -14,13 +14,13 @@ stages:
   - release
 
 build-app:
-  image: omnijarstudio/rust:linux-musl
+  image: omnijar/rust:linux-musl
   stage: build
   script:
-    - echo "Building release artifact for calabazilla"
+    - echo "Building release artifact"
     - make build
     - mkdir -p artifacts
-    - mv target/x86_64-unknown-linux-musl/release/calabazilla artifacts/
+    - mv target/x86_64-unknown-linux-musl/release/rush artifacts/
     - make clean
   artifacts:
     paths:
@@ -33,10 +33,10 @@ build-app:
     - release
 
 review-app:
-  image: omnijarstudio/rust:linux-musl
+  image: omnijar/rust:linux-musl
   stage: test
   script:
-    - echo "Reviewing calabazilla service"
+    - echo "Reviewing service"
     - make build
     - make test
     - make clean
@@ -46,14 +46,14 @@ review-app:
     - master
 
 test-app:
-  image: omnijarstudio/rust:linux-musl
+  image: omnijar/rust:linux-musl
   stage: test
   script:
-    - echo "Testing calabazilla service"
+    - echo "Testing service"
     - make build-dev
     - make test
     - mkdir -p artifacts
-    - mv target/x86_64-unknown-linux-musl/debug/calabazilla artifacts/
+    - mv target/x86_64-unknown-linux-musl/debug/rush artifacts/
     - make clean
   tags:
     - docker
