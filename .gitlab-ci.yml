@@ -1,0 +1,81 @@
+variables:
+  DOCKER_DRIVER: overlay
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+  CONTAINER_IMAGE: $CI_REGISTRY_IMAGE
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+
+cache:
+  untracked: true
+  key: "$CI_PROJECT_NAME"
+
+stages:
+  - build
+  - test
+  - release
+
+build-app:
+  image: omnijarstudio/rust:linux-musl
+  stage: build
+  script:
+    - echo "Building release artifact for calabazilla"
+    - make build
+    - mkdir -p artifacts
+    - mv target/x86_64-unknown-linux-musl/release/calabazilla artifacts/
+    - make clean
+  artifacts:
+    paths:
+    - ./artifacts
+    expire_in: 1 week
+  tags:
+    - docker
+  when: manual
+  only:
+    - release
+
+review-app:
+  image: omnijarstudio/rust:linux-musl
+  stage: test
+  script:
+    - echo "Reviewing calabazilla service"
+    - make build
+    - make test
+    - make clean
+  only:
+    - branches
+  except:
+    - master
+
+test-app:
+  image: omnijarstudio/rust:linux-musl
+  stage: test
+  script:
+    - echo "Testing calabazilla service"
+    - make build-dev
+    - make test
+    - mkdir -p artifacts
+    - mv target/x86_64-unknown-linux-musl/debug/calabazilla artifacts/
+    - make clean
+  tags:
+    - docker
+  only:
+    - master
+  artifacts:
+    paths:
+    - ./artifacts
+
+release-image:
+  image: docker:scratch
+  stage: release
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker build --pull -t $CONTAINER_TEST_IMAGE -f Dockerfile .
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_IMAGE:latest
+    - docker push $CONTAINER_IMAGE:latest
+  when: manual
+  tags:
+    - docker
+  only:
+    - release
