@@ -16,7 +16,7 @@ byteorder = "1.1"
 bitflags = "0.9"
 log = "0.3"
 
-openssl-sys = "0.9.3"
+openssl = "0.9.23"
 
 cryptovec = "0.4.1"
 tokio-core = "0.1"
