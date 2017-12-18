@@ -20,7 +20,7 @@ build-app:
     - echo "Building release artifact"
     - make build-release
     - mkdir -p artifacts
-    - mv target/x86_64-unknown-linux-musl/release/rush artifacts/
+    - mv target/x86_64-unknown-linux-musl/release/librush artifacts/
     - make clean
   artifacts:
     paths:
@@ -53,7 +53,7 @@ test-app:
     - make build
     - make test
     - mkdir -p artifacts
-    - mv target/x86_64-unknown-linux-musl/debug/rush artifacts/
+    - mv target/x86_64-unknown-linux-musl/debug/librush artifacts/
     - make clean
   tags:
     - docker
